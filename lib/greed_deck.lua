@@ -5,7 +5,7 @@ local greed_deck = SMODS.Back{
     config = {
         dollars=GREED.config.starting_deck.dollars,
         joker_slot=GREED.config.starting_deck.joker_slot,
-        greed = GREED.config.greed
+        greed = GREED.config.greed,
         },
     loc_txt = {
         name = "Greed Deck",
@@ -22,9 +22,24 @@ local greed_deck = SMODS.Back{
         }}
     end,
     unlocked = true,
-    discovered = true
+    discovered = true, 
+    trigger_effect = function(self,args)
+        if args.context == "final_scoring_step" then
+            local chips, mult = GREED.evaluate(G.GAME.dollars, self.config.greed)
+            args.chips = args.chips + chips
+            args.mult = args.mult + mult
+
+            update_hand_text({
+                delay = 0
+            },
+            {
+                mult = args.mult,
+                chips = args.chips,
+            })
+            return args.chips, args.mult
+        end
+    end
 }
 
 
-
-Greed.deck = greed_deck;
+GREED.deck = greed_deck;

@@ -38,7 +38,8 @@ function GREED.evaluate(dollars, config)
     -- always execute to disable new jokers each play
     GREED.evaluate_joker_slots(dollars, config)
     if dollars == GREED.tracker.last_seen_dollars then
-        return GREED.cache
+        return GREED.cache.chips, GREED.cache.mult
+
     end
     GREED.tracker.last_seen_dollars = dollars
     return GREED.evaluate_chips_and_mult(dollars, config)
@@ -67,21 +68,31 @@ end
 local disable_active_jokers = function(jokers_based_on_dollar)
     local current_jokers = #G.jokers.cards;
 
-    if current_jokers < jokers_based_on_dollar then
+    if current_jokers <= jokers_based_on_dollar then
         print("Threshold to disable not met!")
         return
     end
     -- 4 jokers, start disabling at 4 so result is +1
-    local amount_to_disable = (current_jokers - jokers_based_on_dollar) + 1
+    local amount_to_disable = (current_jokers - jokers_based_on_dollar)
 
     -- don't care to keep result, keeping to Balatro RNG theme here.. add caching if you want to only disable the same jokers
     GREED.tracker.disabled_jokers = amount_to_disable
-
+    local applicable_jokers = 0;
+    for i=1, #G.jokers.cards do
+        local joker = G.jokers.cards[i]
+        if not joker.ability.name == "Greed Personified" then
+            applicable_jokers = applicable_jokers + 1
+        end
+    end
+    if applicable_jokers == 0 then
+        return
+    end
     clear_current_disabled_jokers()
     while amount_to_disable > 0 do
         local idx = math.random(1, current_jokers)
         local joker = G.jokers.cards[idx]
-        if joker.name ~= "Greed Personified" and not joker.greed_debuffed then
+
+        if joker.ability.name ~= "Greed Personified" and not joker.greed_debuffed then
             joker.greed_debuffed = true
             joker:set_debuff(true)
             amount_to_disable = amount_to_disable - 1
@@ -106,8 +117,15 @@ end
 
 function GREED.evaluate_joker_slots(dollars, config)
     local joker_count = math.floor(dollars / config.joker.money_required)
+    if not G or not G.jokers then
+        return
+    end
+    if GREED.cache.jokers == 0 and G.jokers.config.card_limit > 0 then
+        GREED.cache.jokers = G.jokers.config.card_limit
+    end
     if joker_count >= GREED.cache.jokers then
         local to_add = joker_count - GREED.cache.jokers
+        G.GAME.selected_back.effect.config.greed.joker_count = 1234
         GREED.cache.jokers = joker_count
         G.jokers.config.card_limit = G.jokers.config.card_limit + to_add
         evaluate_joker_activation()
