@@ -19,7 +19,7 @@ jobs:
     - name: Archive folder
       run: |
         mkdir -p output
-        cp -r balatro_greed_deck/
+        cp -r ../
         cd output
         zip -r ../release.zip .
       shell: bash
