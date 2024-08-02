@@ -15,29 +15,32 @@ function SMODS.INIT.greed_deck()
     load(NFS.read(SMODS.current_mod.path .. '/lib/greed_deck.lua'))()
     load(NFS.read(SMODS.current_mod.path .. '/lib/greed_joker.lua'))()
     load(NFS.read(SMODS.current_mod.path .. '/lib/greed_challenge.lua'))()
-
-
 end
 
 local ease_dollars_ref = ease_dollars
 local start_run_ref = Game.start_run
 local blind_debuff_card = Blind.debuff_card
+
 function ease_dollars(mod,intent)
     local t = ease_dollars_ref(mod,intent)
     -- if using a GREED DECK RECALC
     if G.GAME.selected_back.name == "Greed Deck" then
         GREED.evaluate(G.GAME.dollars+mod,G.GAME.selected_back.effect.config.greed)
+    elseif  G.GAME.challenge == 'c_greed_p4n1fyd' then
+        GREED.evaluate(G.GAME.dollars+mod,GREED.config.greed)
     end
 
     return t
 end
 function Game:start_run(args)
     local t = start_run_ref(self,args)
-    if G.GAME.selected_back.name == "Greed Deck" then
+    if G.GAME.selected_back.name == "Greed Deck"  then
         GREED.evaluate(G.GAME.dollars,G.GAME.selected_back.effect.config.greed)
+    elseif  G.GAME.challenge == 'c_greed_p4n1fyd' then
+        GREED.evaluate(G.GAME.dollars,GREED.config.greed)
     end
     return t
-end
+    end
 function Blind:debuff_card(card, from_blind)
     local t = blind_debuff_card(self, card,from_blind)
     if card.ability.set == 'Joker' then
@@ -48,5 +51,6 @@ function Blind:debuff_card(card, from_blind)
         end
     return t
 end
+
 ----------------------------------------------
 ------------MOD CODE END----------------------

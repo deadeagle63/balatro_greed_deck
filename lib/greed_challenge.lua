@@ -24,7 +24,7 @@ table.insert(G.CHALLENGES,1,{
     vouchers = {
     },
     deck = {
-        type = 'Yellow Deck'
+        type = 'Challenge Deck'
     },
     restrictions = {
         banned_cards = {
