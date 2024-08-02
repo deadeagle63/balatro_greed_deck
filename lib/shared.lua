@@ -121,6 +121,7 @@ function GREED.evaluate_joker_slots(dollars, config)
         return
     end
     if GREED.cache.jokers == 0 and G.jokers.config.card_limit > 0 then
+        -- safety for loading saves
         GREED.cache.jokers = G.jokers.config.card_limit
     end
     if joker_count >= GREED.cache.jokers then

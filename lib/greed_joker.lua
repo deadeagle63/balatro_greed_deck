@@ -17,8 +17,8 @@ local greed_p4n1fyd = SMODS.Joker {
     discovered = true,
     eternal_compat = true,
     calculate = function (self, card, ctx)
+        local chips, mult = GREED.evaluate(G.GAME.dollars, self.config.greed)
         if ctx.joker_main then
-            local chips, mult = GREED.evaluate(G.GAME.dollars, self.config.greed)
 
             return {
                 mult_mod =  mult,
