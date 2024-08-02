@@ -18,9 +18,9 @@ jobs:
 
     - name: Archive folder
       run: |
-        mkdir -p output
-        cp -r ../
-        cd output
+        mkdir -p ../output
+        cp -r ./ ../output
+        cd ../output
         zip -r ../release.zip .
       shell: bash
 
