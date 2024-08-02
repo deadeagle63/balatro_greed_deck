@@ -17,7 +17,7 @@ table.insert(G.CHALLENGES,1,{
         }
     },
     jokers = {
-        {id = 'j_greed_p4n1fyd', eternal = true}, -- id of jokers can be looked up in game.lua at line ~500
+        {id = 'j_greed_p4n1fyd', eternal = true, edition = 'negative'}, -- id of jokers can be looked up in game.lua at line ~500
     },
     consumeables = {
     },

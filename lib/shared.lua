@@ -27,7 +27,7 @@ GREED.cache = {
     mult = 0,
     chips = 0,
     jokers = 0,
-    prev_calc_joker = 0
+    prev_jokers = 0
 }
 GREED.translation = {
     "Gain {C:blue}+#1# Chips{} per {C:money}$#2#{},",
@@ -68,21 +68,24 @@ end
 local disable_active_jokers = function(jokers_based_on_dollar)
     local current_jokers = #G.jokers.cards;
 
-    if current_jokers <= jokers_based_on_dollar then
-        print("Threshold to disable not met!")
-        return
-    end
-    -- 4 jokers, start disabling at 4 so result is +1
     local amount_to_disable = (current_jokers - jokers_based_on_dollar)
-
-    -- don't care to keep result, keeping to Balatro RNG theme here.. add caching if you want to only disable the same jokers
-    GREED.tracker.disabled_jokers = amount_to_disable
+    -- if the greed joker is in play it can't be disabled cause GREEEED
     for i=1, #G.jokers.cards do
         local joker = G.jokers.cards[i]
         if not joker.ability.name == "Greed Personified" then
             amount_to_disable = amount_to_disable - 1
         end
+
     end
+    if current_jokers <= jokers_based_on_dollar then
+        print("Threshold to disable not met!")
+        return
+    end
+    -- 4 jokers, start disabling at 4
+
+    -- don't care to keep result, keeping to Balatro RNG theme here.. add caching if you want to only disable the same jokers
+    GREED.tracker.disabled_jokers = amount_to_disable
+
 
     if amount_to_disable <= 0 then
         return
@@ -118,6 +121,13 @@ end
 
 function GREED.evaluate_joker_slots(dollars, config)
     local joker_count = math.floor(dollars / config.joker.money_required)
+    -- accounts for negatives when calculating the floor
+    for i=1, #G.jokers.cards do
+        local joker = G.jokers.cards[i]
+        if joker.edition and joker.edition.negative then
+            joker_count = joker_count + 1
+        end
+    end
     if G.GAME.challenge == 'c_greed_p4n1fyd' then
         joker_count = joker_count + 1
     end
@@ -129,10 +139,7 @@ function GREED.evaluate_joker_slots(dollars, config)
         -- safety for loading saves
         GREED.cache.jokers = G.jokers.config.card_limit
     end
-    if joker_count == GREED.cache.prev_calc_joker then
-        return
-    end
-    GREED.cache.prev_calc_joker = joker_count
+
     if joker_count >= GREED.cache.jokers then
         local to_add = joker_count - GREED.cache.jokers
         print(G.GAME.selected_back.name)
