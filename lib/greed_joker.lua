@@ -56,3 +56,10 @@ G.localization.descriptions.Other['j_greed_p4n1fyd_queue_1'] = {
         '{C:dark_edition}#3# Joker Slots'
     }
 }
+
+SMODS.Atlas{
+    key = "jokers",
+    path = "greed_joker.png",
+    px = 71,
+    py = 95
+}
