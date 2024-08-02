@@ -37,7 +37,8 @@ local greed_p4n1fyd = SMODS.Joker {
             self.config.greed.joker.gained,
             self.config.greed.joker.money_required
         }}
-    end
+    end,
+    atlas = "greed_joker"
 }
 
 
@@ -58,8 +59,8 @@ G.localization.descriptions.Other['j_greed_p4n1fyd_queue_1'] = {
 }
 
 SMODS.Atlas{
-    key = "jokers",
+    key = "greed_joker",
     path = "greed_joker.png",
-    px = 71,
-    py = 95
+    px = 142,
+    py = 190
 }

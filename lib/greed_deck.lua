@@ -1,7 +1,7 @@
 local greed_deck = SMODS.Back{
     name = "Greed Deck",
     key = "greedDeck",
-    pos = {x=0,y=3},
+    pos = {x=0,y=0},
     config = {
         dollars=GREED.config.starting_deck.dollars,
         joker_slot=GREED.config.starting_deck.joker_slot,
@@ -38,8 +38,16 @@ local greed_deck = SMODS.Back{
             })
             return args.chips, args.mult
         end
-    end
+    end,
+    atlas = "greed_deck"
 }
 
 
 GREED.deck = greed_deck;
+
+SMODS.Atlas{
+    key = "greed_deck",
+    path = "greed_deck1.0.png",
+    px = 142,
+    py = 190
+}

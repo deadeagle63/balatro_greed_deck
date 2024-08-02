@@ -1,10 +1,9 @@
 --- STEAMODDED HEADER
 --- MOD_NAME: Greed Deck
---- MOD_ID: greed_origin
+--- MOD_ID: greed_deck
 --- MOD_AUTHOR: [deadeagle63]
---- PREFIX: deck
 --- MOD_DESCRIPTION: Modded seal example
-
+--- LOADER_VERSION_GEQ: 1.0.0
 ----------------------------------------------
 ------------MOD CODE -------------------------
 GREED = {
