@@ -121,11 +121,12 @@ end
 
 function GREED.evaluate_joker_slots(dollars, config)
     local joker_count = math.floor(dollars / config.joker.money_required)
+    local negative_jokers = 0
     -- accounts for negatives when calculating the floor
     for i=1, #G.jokers.cards do
         local joker = G.jokers.cards[i]
         if joker.edition and joker.edition.negative then
-            joker_count = joker_count + 1
+            negative_jokers = negative_jokers + 1
         end
     end
     if G.GAME.challenge == 'c_greed_p4n1fyd' then
@@ -142,12 +143,10 @@ function GREED.evaluate_joker_slots(dollars, config)
 
     if joker_count >= GREED.cache.jokers then
         local to_add = joker_count - GREED.cache.jokers
-        print(G.GAME.selected_back.name)
         GREED.cache.jokers = joker_count
         G.jokers.config.card_limit = G.jokers.config.card_limit + to_add
-        print("TO ADD"..joker_count.." "..to_add)
         evaluate_joker_activation()
     elseif joker_count < GREED.cache.jokers then
-        disable_active_jokers(joker_count)
+        disable_active_jokers(joker_count+negative_jokers)
     end
 end
